@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>🎁 Kyauta ta Musamman</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #ff8fab, transparent 35%),
+        linear-gradient(135deg, #16001f, #3b003f, #120018);
+
+      color: white;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 500px;
+      min-height: 100vh;
+      padding: 25px 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* =========================
+       HEARTS
+    ========================= */
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -50px;
+      animation: floatHeart linear forwards;
+      opacity: 0.85;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform:
+          translateY(0)
+          rotate(0deg)
+          scale(0.7);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      100% {
+        transform:
+          translateY(-110vh)
+          rotate(360deg)
+          scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    /* =========================
+       SCREEN
+    ========================= */
+
+    .screen {
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 5;
+      animation: screenIn 1s ease;
+    }
+
+    @keyframes screenIn {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .small-title {
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: #ffd6e5;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 31px;
+      margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(255, 100, 170, 0.7);
+    }
+
+    .subtitle {
+      color: #ffd9e7;
+      line-height: 1.7;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* =========================
+       GIFT BOX
+    ========================= */
+
+    .gift-area {
+      height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .gift {
+      width: 190px;
+      height: 170px;
+      position: relative;
+      cursor: pointer;
+      animation: giftFloat 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 20px 25px rgba(0,0,0,0.4));
+    }
+
+    @keyframes giftFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+
+      50% {
+        transform: translateY(-12px) rotate(1deg);
+      }
+    }
+
+    .box {
+      position: absolute;
+      width: 170px;
+      height: 115px;
+      left: 10px;
+      bottom: 10px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff3d81, #c60055);
+      border: 3px solid rgba(255,255,255,0.2);
+    }
+
+    .box::after {
+      content: "";
+      position: absolute;
+      width: 28px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        90deg,
+        #ffd54f,
+        #fff1a8,
+        #ffd54f
+      );
+    }
+
+    .box::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 25px;
+      top: 40px;
+      left: 0;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .lid {
+      position: absolute;
+      width: 190px;
+      height: 45px;
+      left: 0;
+      top: 38px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff5793, #db005e);
+      border: 3px solid rgba(255,255,255,0.25);
+      z-index: 4;
+      transition: 1s ease;
+    }
+
+    .lid::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        90deg,
+        #ffd54f,
+        #fff4b0,
+        #ffd54f
+      );
+    }
+
+    .ribbon {
+      position: absolute;
+      width: 30px;
+      height: 50px;
+      background: #ffd54f;
+      top: 5px;
+      left: 80px;
+      z-index: 6;
+      border-radius: 50% 50% 5px 5px;
+    }
+
+    .bow-left,
+    .bow-right {
+      position: absolute;
+      width: 65px;
+      height: 38px;
+      background: #ffd54f;
+      top: -18px;
+      border-radius: 50%;
+    }
+
+    .bow-left {
+      left: 40px;
+      transform: rotate(-25deg);
+    }
+
+    .bow-right {
+      right: 40px;
+      transform: rotate(25deg);
+    }
+
+    .gift.opened {
+      animation: giftOpen 0.8s ease forwards;
+    }
+
+    @keyframes giftOpen {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+
+      100% {
+        transform: scale(0.85);
+      }
+    }
+
+    .gift.opened .lid {
+      transform:
+        translateY(-100px)
+        rotate(-15deg);
+      opacity: 0;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .open-btn {
+      border: none;
+      padding: 17px 35px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+
+      background:
+        linear-gradient(135deg, #ff3d81, #c40062);
+
+      box-shadow:
+        0 10px 30px rgba(255, 0, 110, 0.35);
+
+      transition: 0.3s;
+    }
+
+    .open-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .open-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    .message-box {
+      display: none;
+      margin-top: 20px;
+      animation: messageIn 1s ease;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .message-card {
+      padding: 25px 20px;
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.14),
+          rgba(255,255,255,0.05)
+        );
+
+      border: 1px solid rgba(255,255,255,0.2);
+
+      backdrop-filter: blur(15px);
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .message-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .message {
+      min-height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 21px;
+      line-height: 1.7;
+      color: #fff3f8;
+    }
+
+    .counter {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ffc8dc;
+    }
+
+    /* =========================
+       FINAL
+    ========================= */
+
+    .final {
+      display: none;
+      animation: finalIn 1.2s ease;
+    }
+
+    @keyframes finalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .final-heart {
+      font-size: 70px;
+      animation: heartBeat 1s infinite;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    .final h2 {
+      font-size: 30px;
+      margin: 15px 0;
+    }
+
+    .final p {
+      line-height: 1.8;
+      color: #ffe0ec;
+      font-size: 17px;
+    }
+
+    .restart {
+      margin-top: 25px;
+      padding: 13px 25px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 380px) {
+      h1 {
+        font-size: 27px;
+      }
+
+      .gift {
+        transform: scale(0.9);
+      }
+
+      .message {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="hearts" id="hearts"></div>
+
+  <main class="app">
+
+    <section class="screen">
+
+      <div id="startScreen">
+
+        <div class="small-title">
+          💌 SAƘO NA MUSAMMAN
+        </div>
+
+        <h1>
+          Akwai Kyauta Gare Ki ❤️
+        </h1>
+
+        <p class="subtitle">
+          Na shirya miki wani abu na musamman...
+          <br>
+          Amma sai kin buɗe kyautar 🎁
+        </p>
+
+        <div class="gift-area">
+
+          <div class="gift" id="gift">
+
+            <div class="bow-left"></div>
+            <div class="bow-right"></div>
+
+            <div class="ribbon"></div>
+
+            <div class="lid"></div>
+
+            <div class="box"></div>
+
+          </div>
+
+        </div>
+
+        <button class="open-btn" id="openBtn">
+          🎁 Buɗe Kyautar
+        </button>
+
+      </div>
+
+
+      <!-- MESSAGE SCREEN -->
+
+      <div class="message-box" id="messageBox">
+
+        <div class="message-card">
+
+          <div class="message-icon" id="messageIcon">
+            💌
+          </div>
+
+          <div class="message" id="message">
+          </div>
+
+          <div class="counter" id="counter">
+            1 / 5
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FINAL SCREEN -->
+
+      <div class="final" id="finalScreen">
+
+        <div class="final-heart">
+          ❤️
+        </div>
+
+        <h2>
+          Wannan Kyautar Taki Ce
+        </h2>
+
+        <p>
+          Ba wai kyauta ce kawai ba...
+          <br>
+          Saƙo ne daga zuciyata zuwa zuciyarki.
+          <br><br>
+          Ina fatan kin ji daɗinta 🥰
+          <br>
+          Kuma ki sani...
+          <br>
+          <strong>
+            Kina da matsayi na musamman a zuciyata. ❤️
+          </strong>
+        </p>
+
+        <button class="restart" id="restartBtn">
+          🔄 Sake Buɗewa
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =================================
+       SAƘONNIN DA ZASU BAYYANA
+       ================================= */
+
+    const messages = [
+
+      {
+        icon: "💌",
+        text: "Kin san cewa akwai wani mutum da yake murmushi duk lokacin da ya tuna da ke? ❤️"
+      },
+
+      {
+        icon: "🥰",
+        text: "Ke ce ɗaya daga cikin kyawawan abubuwan da suka faru a rayuwata."
+      },
+
+      {
+        icon: "❤️",
+        text: "Ba na bukatar wata kyauta daga gare ki... kasancewarki a rayuwata ta isa."
+      },
+
+      {
+        icon: "🌹",
+        text: "Idan zan iya ba ki abu ɗaya kawai, zan ba ki damar ganin kanki kamar yadda nake ganinki."
+      },
+
+      {
+        icon: "💖",
+        text: "Saboda a idanuna, kina da daraja fiye da yadda kalmomi za su iya bayyanawa."
+      }
+
+    ];
+
+
+    /* =================================
+       ELEMENTS
+       ================================= */
+
+    const gift = document.getElementById("gift");
+
+    const openBtn =
+      document.getElementById("openBtn");
+
+    const startScreen =
+      document.getElementById("startScreen");
+
+    const messageBox =
+      document.getElementById("messageBox");
+
+    const message =
+      document.getElementById("message");
+
+    const messageIcon =
+      document.getElementById("messageIcon");
+
+    const counter =
+      document.getElementById("counter");
+
+    const finalScreen =
+      document.getElementById("finalScreen");
+
+    const restartBtn =
+      document.getElementById("restartBtn");
+
+    const hearts =
+      document.getElementById("hearts");
+
+
+    let currentMessage = 0;
+
+
+    /* =================================
+       CREATE HEART
+       ================================= */
+
+    function createHeart() {
+
+      const heart =
+        document.createElement("div");
+
+      heart.className = "heart";
+
+      const heartTypes = [
+        "❤️",
+        "💕",
+        "💖",
+        "💗",
+        "💓",
+        "💘",
+        "💝"
+      ];
+
+      heart.textContent =
+        heartTypes[
+          Math.floor(
+            Math.random() * heartTypes.length
+          )
+        ];
+
+      heart.style.left =
+        Math.random() * 100 + "%";
+
+      heart.style.fontSize =
+        (15 + Math.random() * 25) + "px";
+
+      heart.style.animationDuration =
+        (5 + Math.random() * 5) + "s";
+
+      hearts.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+
+    /* Hearts kullum */
+
+    setInterval(createHeart, 700);
+
+
+    /* =================================
+       TYPEWRITER EFFECT
+       ================================= */
+
+    function typeMessage(text) {
+
+      message.textContent = "";
+
+      let i = 0;
+
+      const speed = 45;
+
+      function type() {
+
+        if (i < text.length) {
+
+          message.textContent += text.charAt(i);
+
+          i++;
+
+          setTimeout(type, speed);
+
+        }
+
+      }
+
+      type();
+    }
+
+
+    /* =================================
+       SHOW MESSAGE
+       ================================= */
+
+    function showMessage() {
+
+      if (currentMessage >= messages.length) {
+
+        showFinal();
+
+        return;
+      }
+
+      const item =
+        messages[currentMessage];
+
+      messageIcon.textContent =
+        item.icon;
+
+      counter.textContent =
+        `${currentMessage + 1} / ${messages.length}`;
+
+      typeMessage(item.text);
+
+      currentMessage++;
+
+    }
+
+
+    /* =================================
+       OPEN GIFT
+       ================================= */
+
+    openBtn.addEventListener("click", () => {
+
+      gift.classList.add("opened");
+
+      openBtn.style.display = "none";
+
+      setTimeout(() => {
+
+        startScreen.style.display = "none";
+
+        messageBox.style.display = "block";
+
+        showMessage();
+
+      }, 900);
+
+    });
+
+
+    /* =================================
+       CLICK MESSAGE
+       ================================= */
+
+    messageBox.addEventListener("click", () => {
+
+      showMessage();
+
+    });
+
+
+    /* =================================
+       FINAL SCREEN
+       ================================= */
+
+    function showFinal() {
+
+      messageBox.style.display = "none";
+
+      finalScreen.style.display = "block";
+
+      for (let i = 0; i < 20; i++) {
+
+        setTimeout(createHeart, i * 100);
+
+      }
+
+    }
+
+
+    /* =================================
+       RESTART
+       ================================= */
+
+    restartBtn.addEventListener("click", () => {
+
+      currentMessage = 0;
+
+      finalScreen.style.display = "none";
+
+      startScreen.style.display = "block";
+
+      gift.classList.remove("opened");
+
+      openBtn.style.display = "inline-block";
+
+    });
+
+
+  </script>
+
+</body>
+</html>
