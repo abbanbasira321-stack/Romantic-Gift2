@@ -1,817 +1,794 @@
 <!DOCTYPE html>
 <html lang="ha">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>🎁 Kyauta ta Musamman</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, #ff8fab, transparent 35%),
-        linear-gradient(135deg, #16001f, #3b003f, #120018);
-
-      color: white;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 500px;
-      min-height: 100vh;
-      padding: 25px 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* =========================
-       HEARTS
-    ========================= */
-
-    .hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -50px;
-      animation: floatHeart linear forwards;
-      opacity: 0.85;
-    }
-
-    @keyframes floatHeart {
-      0% {
-        transform:
-          translateY(0)
-          rotate(0deg)
-          scale(0.7);
-        opacity: 0;
-      }
-
-      15% {
-        opacity: 1;
-      }
-
-      100% {
-        transform:
-          translateY(-110vh)
-          rotate(360deg)
-          scale(1.3);
-        opacity: 0;
-      }
-    }
-
-    /* =========================
-       SCREEN
-    ========================= */
-
-    .screen {
-      width: 100%;
-      text-align: center;
-      position: relative;
-      z-index: 5;
-      animation: screenIn 1s ease;
-    }
-
-    @keyframes screenIn {
-      from {
-        opacity: 0;
-        transform: translateY(25px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .small-title {
-      font-size: 15px;
-      letter-spacing: 2px;
-      color: #ffd6e5;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      font-size: 31px;
-      margin-bottom: 12px;
-      text-shadow: 0 0 20px rgba(255, 100, 170, 0.7);
-    }
-
-    .subtitle {
-      color: #ffd9e7;
-      line-height: 1.7;
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
-
-    /* =========================
-       GIFT BOX
-    ========================= */
-
-    .gift-area {
-      height: 290px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .gift {
-      width: 190px;
-      height: 170px;
-      position: relative;
-      cursor: pointer;
-      animation: giftFloat 2.5s ease-in-out infinite;
-      filter: drop-shadow(0 20px 25px rgba(0,0,0,0.4));
-    }
-
-    @keyframes giftFloat {
-      0%, 100% {
-        transform: translateY(0) rotate(-1deg);
-      }
-
-      50% {
-        transform: translateY(-12px) rotate(1deg);
-      }
-    }
-
-    .box {
-      position: absolute;
-      width: 170px;
-      height: 115px;
-      left: 10px;
-      bottom: 10px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #ff3d81, #c60055);
-      border: 3px solid rgba(255,255,255,0.2);
-    }
-
-    .box::after {
-      content: "";
-      position: absolute;
-      width: 28px;
-      height: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(
-        90deg,
-        #ffd54f,
-        #fff1a8,
-        #ffd54f
-      );
-    }
-
-    .box::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 25px;
-      top: 40px;
-      left: 0;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .lid {
-      position: absolute;
-      width: 190px;
-      height: 45px;
-      left: 0;
-      top: 38px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #ff5793, #db005e);
-      border: 3px solid rgba(255,255,255,0.25);
-      z-index: 4;
-      transition: 1s ease;
-    }
-
-    .lid::after {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(
-        90deg,
-        #ffd54f,
-        #fff4b0,
-        #ffd54f
-      );
-    }
-
-    .ribbon {
-      position: absolute;
-      width: 30px;
-      height: 50px;
-      background: #ffd54f;
-      top: 5px;
-      left: 80px;
-      z-index: 6;
-      border-radius: 50% 50% 5px 5px;
-    }
-
-    .bow-left,
-    .bow-right {
-      position: absolute;
-      width: 65px;
-      height: 38px;
-      background: #ffd54f;
-      top: -18px;
-      border-radius: 50%;
-    }
-
-    .bow-left {
-      left: 40px;
-      transform: rotate(-25deg);
-    }
-
-    .bow-right {
-      right: 40px;
-      transform: rotate(25deg);
-    }
-
-    .gift.opened {
-      animation: giftOpen 0.8s ease forwards;
-    }
-
-    @keyframes giftOpen {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.15);
-      }
-
-      100% {
-        transform: scale(0.85);
-      }
-    }
-
-    .gift.opened .lid {
-      transform:
-        translateY(-100px)
-        rotate(-15deg);
-      opacity: 0;
-    }
-
-    /* =========================
-       BUTTON
-    ========================= */
-
-    .open-btn {
-      border: none;
-      padding: 17px 35px;
-      border-radius: 50px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      cursor: pointer;
-
-      background:
-        linear-gradient(135deg, #ff3d81, #c40062);
-
-      box-shadow:
-        0 10px 30px rgba(255, 0, 110, 0.35);
-
-      transition: 0.3s;
-    }
-
-    .open-btn:hover {
-      transform: translateY(-3px);
-    }
-
-    .open-btn:active {
-      transform: scale(0.94);
-    }
-
-    /* =========================
-       MESSAGE
-    ========================= */
-
-    .message-box {
-      display: none;
-      margin-top: 20px;
-      animation: messageIn 1s ease;
-    }
-
-    @keyframes messageIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.9);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .message-card {
-      padding: 25px 20px;
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,255,255,0.14),
-          rgba(255,255,255,0.05)
-        );
-
-      border: 1px solid rgba(255,255,255,0.2);
-
-      backdrop-filter: blur(15px);
-
-      box-shadow:
-        0 20px 50px rgba(0,0,0,0.3);
-    }
-
-    .message-icon {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .message {
-      min-height: 90px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-size: 21px;
-      line-height: 1.7;
-      color: #fff3f8;
-    }
-
-    .counter {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #ffc8dc;
-    }
-
-    /* =========================
-       FINAL
-    ========================= */
-
-    .final {
-      display: none;
-      animation: finalIn 1.2s ease;
-    }
-
-    @keyframes finalIn {
-      from {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .final-heart {
-      font-size: 70px;
-      animation: heartBeat 1s infinite;
-    }
-
-    @keyframes heartBeat {
-      0%, 100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.2);
-      }
-    }
-
-    .final h2 {
-      font-size: 30px;
-      margin: 15px 0;
-    }
-
-    .final p {
-      line-height: 1.8;
-      color: #ffe0ec;
-      font-size: 17px;
-    }
-
-    .restart {
-      margin-top: 25px;
-      padding: 13px 25px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.3);
-      background: rgba(255,255,255,0.1);
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 380px) {
-      h1 {
-        font-size: 27px;
-      }
-
-      .gift {
-        transform: scale(0.9);
-      }
-
-      .message {
-        font-size: 18px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZAINAB ❤️ Kyauta ta Musamman</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+  color:white;
+  background:
+    radial-gradient(circle at 50% 0%,#ff6f9c,transparent 35%),
+    linear-gradient(145deg,#160018,#43002f,#120016);
+}
+
+.app{
+  min-height:100vh;
+  width:100%;
+  max-width:520px;
+  margin:auto;
+  padding:25px 18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+
+.screen{
+  width:100%;
+}
+
+.top{
+  font-size:13px;
+  letter-spacing:3px;
+  color:#ffd7e6;
+  margin-bottom:12px;
+}
+
+h1{
+  font-size:36px;
+  margin-bottom:10px;
+  text-shadow:0 0 25px #ff5c9a;
+}
+
+.subtitle{
+  font-size:16px;
+  line-height:1.7;
+  color:#ffe4ee;
+}
+
+.name{
+  color:#ffb1ce;
+}
+
+.gift-area{
+  height:300px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.gift{
+  width:190px;
+  height:180px;
+  position:relative;
+  cursor:pointer;
+  animation:float 2.5s ease-in-out infinite;
+  filter:drop-shadow(0 25px 25px rgba(0,0,0,.45));
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-13px);
+  }
+}
+
+.box{
+  position:absolute;
+  left:10px;
+  bottom:5px;
+  width:170px;
+  height:120px;
+  border-radius:8px;
+  background:linear-gradient(135deg,#ff4388,#c6005a);
+  border:2px solid rgba(255,255,255,.2);
+}
+
+.box:after{
+  content:"";
+  position:absolute;
+  width:28px;
+  height:100%;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(
+    90deg,
+    #ffd84d,
+    #fff4a7,
+    #ffd84d
+  );
+}
+
+.lid{
+  position:absolute;
+  left:0;
+  top:40px;
+  width:190px;
+  height:48px;
+  border-radius:8px;
+  background:linear-gradient(135deg,#ff659d,#dc005d);
+  border:2px solid rgba(255,255,255,.25);
+  z-index:5;
+  transition:1s;
+}
+
+.lid:after{
+  content:"";
+  position:absolute;
+  width:28px;
+  height:100%;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(
+    90deg,
+    #ffd84d,
+    #fff4a7,
+    #ffd84d
+  );
+}
+
+.bow-left,
+.bow-right{
+  position:absolute;
+  top:5px;
+  width:65px;
+  height:40px;
+  background:#ffd84d;
+  border-radius:50%;
+  z-index:7;
+}
+
+.bow-left{
+  left:35px;
+  transform:rotate(-25deg);
+}
+
+.bow-right{
+  right:35px;
+  transform:rotate(25deg);
+}
+
+.gift.opened .lid{
+  transform:
+    translateY(-110px)
+    rotate(-15deg);
+  opacity:0;
+}
+
+.open-btn{
+  border:0;
+  padding:17px 35px;
+  border-radius:50px;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  background:linear-gradient(135deg,#ff4388,#c9005d);
+  box-shadow:0 12px 35px rgba(255,0,110,.4);
+}
+
+.open-btn:active{
+  transform:scale(.94);
+}
+
+.messages{
+  display:none;
+  animation:appear .8s ease;
+}
+
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:translateY(30px) scale(.9);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.card{
+  padding:30px 22px;
+  border-radius:28px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(15px);
+  box-shadow:0 25px 60px rgba(0,0,0,.35);
+}
+
+.icon{
+  font-size:50px;
+  margin-bottom:15px;
+}
+
+.message{
+  min-height:130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  line-height:1.7;
+  color:#fff4f8;
+}
+
+.counter{
+  margin-top:12px;
+  font-size:13px;
+  color:#ffbed4;
+}
+
+.next{
+  margin-top:20px;
+  border:0;
+  padding:13px 28px;
+  border-radius:40px;
+  background:rgba(255,255,255,.14);
+  color:white;
+  border:1px solid rgba(255,255,255,.25);
+  font-size:15px;
+}
+
+.final{
+  display:none;
+  animation:finalShow 1.2s ease;
+}
+
+@keyframes finalShow{
+  from{
+    opacity:0;
+    transform:scale(.5);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.big-heart{
+  font-size:80px;
+  animation:beat 1s infinite;
+}
+
+@keyframes beat{
+  50%{
+    transform:scale(1.2);
+  }
+}
+
+.final h2{
+  font-size:32px;
+  margin:15px 0;
+}
+
+.final p{
+  line-height:1.9;
+  font-size:17px;
+  color:#ffe3ed;
+}
+
+.love{
+  color:#ff9fc1;
+  font-weight:bold;
+}
+
+.restart{
+  margin-top:25px;
+  padding:13px 25px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.1);
+  color:white;
+}
+
+.heart{
+  position:fixed;
+  bottom:-50px;
+  pointer-events:none;
+  z-index:1;
+  animation:rise linear forwards;
+}
+
+@keyframes rise{
+  from{
+    transform:translateY(0) rotate(0);
+    opacity:0;
+  }
+  15%{
+    opacity:1;
+  }
+  to{
+    transform:translateY(-110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+.music{
+  position:fixed;
+  right:15px;
+  top:15px;
+  z-index:10;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(0,0,0,.2);
+  color:white;
+  font-size:20px;
+}
+
+@media(max-width:380px){
+  h1{
+    font-size:30px;
+  }
+
+  .gift-area{
+    height:270px;
+  }
+
+  .message{
+    font-size:18px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="hearts" id="hearts"></div>
+<div id="hearts"></div>
 
-  <main class="app">
+<button class="music" id="musicBtn">🔇</button>
 
-    <section class="screen">
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
-      <div id="startScreen">
+<div class="app">
 
-        <div class="small-title">
-          💌 SAƘO NA MUSAMMAN
-        </div>
+<section class="screen">
 
-        <h1>
-          Akwai Kyauta Gare Ki ❤️
-        </h1>
+<!-- START -->
 
-        <p class="subtitle">
-          Na shirya miki wani abu na musamman...
-          <br>
-          Amma sai kin buɗe kyautar 🎁
-        </p>
+<div id="start">
 
-        <div class="gift-area">
+  <div class="top">
+    💌 SAƘO NA MUSAMMAN
+  </div>
 
-          <div class="gift" id="gift">
+  <h1>
+    ZAINAB ❤️
+  </h1>
 
-            <div class="bow-left"></div>
-            <div class="bow-right"></div>
+  <p class="subtitle">
+    Na shirya miki wata kyauta...
+    <br>
+    Amma wannan ba kyauta ce ta yau da kullum ba. 🥰
+    <br><br>
+    <span class="name">
+      Ki buɗe ta da kanki. 🎁
+    </span>
+  </p>
 
-            <div class="ribbon"></div>
+  <div class="gift-area">
 
-            <div class="lid"></div>
+    <div class="gift" id="gift">
 
-            <div class="box"></div>
+      <div class="bow-left"></div>
+      <div class="bow-right"></div>
 
-          </div>
+      <div class="lid"></div>
 
-        </div>
+      <div class="box"></div>
 
-        <button class="open-btn" id="openBtn">
-          🎁 Buɗe Kyautar
-        </button>
+    </div>
 
-      </div>
+  </div>
 
+  <button class="open-btn" id="openBtn">
+    🎁 Buɗe Kyautarki
+  </button>
 
-      <!-- MESSAGE SCREEN -->
+</div>
 
-      <div class="message-box" id="messageBox">
 
-        <div class="message-card">
+<!-- MESSAGES -->
 
-          <div class="message-icon" id="messageIcon">
-            💌
-          </div>
+<div class="messages" id="messages">
 
-          <div class="message" id="message">
-          </div>
+  <div class="card">
 
-          <div class="counter" id="counter">
-            1 / 5
-          </div>
+    <div class="icon" id="icon">
+      💌
+    </div>
 
-        </div>
+    <div class="message" id="message"></div>
 
-      </div>
+    <div class="counter" id="counter">
+      1 / 7
+    </div>
 
+    <button class="next" id="next">
+      Ci gaba ❤️
+    </button>
 
-      <!-- FINAL SCREEN -->
+  </div>
 
-      <div class="final" id="finalScreen">
+</div>
 
-        <div class="final-heart">
-          ❤️
-        </div>
 
-        <h2>
-          Wannan Kyautar Taki Ce
-        </h2>
+<!-- FINAL -->
 
-        <p>
-          Ba wai kyauta ce kawai ba...
-          <br>
-          Saƙo ne daga zuciyata zuwa zuciyarki.
-          <br><br>
-          Ina fatan kin ji daɗinta 🥰
-          <br>
-          Kuma ki sani...
-          <br>
-          <strong>
-            Kina da matsayi na musamman a zuciyata. ❤️
-          </strong>
-        </p>
+<div class="final" id="final">
 
-        <button class="restart" id="restartBtn">
-          🔄 Sake Buɗewa
-        </button>
+  <div class="big-heart">
+    ❤️
+  </div>
 
-      </div>
+  <h2>
+    ZAINAB 💖
+  </h2>
 
-    </section>
+  <p>
 
-  </main>
+    Idan kika karanta wannan har ƙarshe,
+    <br>
+    to kin isa ga ƙarshen ƙaramin sirrina. 🥰
+    <br><br>
 
+    Ina so ki sani cewa
+    <br>
 
-  <script>
+    <span class="love">
+      kina da matsayi na musamman a zuciyata.
+    </span>
 
-    /* =================================
-       SAƘONNIN DA ZASU BAYYANA
-       ================================= */
+    <br><br>
 
-    const messages = [
+    Wannan gift ɗin na iya zama ƙarami...
+    <br>
+    amma abin da nake son ya isar miki
+    <br>
+    ya fi girman gift ɗin. ❤️
 
-      {
-        icon: "💌",
-        text: "Kin san cewa akwai wani mutum da yake murmushi duk lokacin da ya tuna da ke? ❤️"
-      },
+    <br><br>
 
-      {
-        icon: "🥰",
-        text: "Ke ce ɗaya daga cikin kyawawan abubuwan da suka faru a rayuwata."
-      },
+    <strong>
+      ZAINAB, ki kasance cikin farin ciki kullum. 🌹
+    </strong>
 
-      {
-        icon: "❤️",
-        text: "Ba na bukatar wata kyauta daga gare ki... kasancewarki a rayuwata ta isa."
-      },
+  </p>
 
-      {
-        icon: "🌹",
-        text: "Idan zan iya ba ki abu ɗaya kawai, zan ba ki damar ganin kanki kamar yadda nake ganinki."
-      },
+  <button class="restart" id="restart">
+    🔄 Sake Buɗewa
+  </button>
 
-      {
-        icon: "💖",
-        text: "Saboda a idanuna, kina da daraja fiye da yadda kalmomi za su iya bayyanawa."
-      }
+</div>
 
-    ];
+</section>
 
+</div>
 
-    /* =================================
-       ELEMENTS
-       ================================= */
 
-    const gift = document.getElementById("gift");
+<script>
 
-    const openBtn =
-      document.getElementById("openBtn");
+/* ==========================
+   SAƘONNIN ZAINAB
+========================== */
 
-    const startScreen =
-      document.getElementById("startScreen");
+const messages = [
 
-    const messageBox =
-      document.getElementById("messageBox");
+  {
+    icon:"💌",
+    text:"ZAINAB, akwai wani mutum da murmushinsa yake ƙaruwa duk lokacin da ya tuna da ke. ❤️"
+  },
 
-    const message =
-      document.getElementById("message");
+  {
+    icon:"🥰",
+    text:"Kin kasance ɗaya daga cikin mutanen da suka sa rayuwa ta zama mai daɗi fiye da yadda nake tsammani."
+  },
 
-    const messageIcon =
-      document.getElementById("messageIcon");
+  {
+    icon:"🌹",
+    text:"Ba wai saboda kyawunki kawai nake sonki ba... akwai wani abu a cikin halayyarki da yake sa ki zama ta musamman."
+  },
 
-    const counter =
-      document.getElementById("counter");
+  {
+    icon:"❤️",
+    text:"Idan farin ciki yana da suna, a wurina zai iya zama ZAINAB."
+  },
 
-    const finalScreen =
-      document.getElementById("finalScreen");
+  {
+    icon:"💖",
+    text:"Ina fata duk ranar da kika ga wannan gift, ki tuna cewa akwai wanda yake miki fatan alheri daga zuciyarsa."
+  },
 
-    const restartBtn =
-      document.getElementById("restartBtn");
+  {
+    icon:"✨",
+    text:"Wannan saƙon ba shi da tsada, amma na rubuta shi da abin da ya fi kuɗi daraja: zuciyata."
+  },
 
-    const hearts =
-      document.getElementById("hearts");
+  {
+    icon:"🌹",
+    text:"ZAINAB ❤️ ki sani cewa kina da matsayi na musamman a zuciyata, kuma wannan kyautar shaida ce kawai."
+  }
 
+];
 
-    let currentMessage = 0;
 
+/* ELEMENTS */
 
-    /* =================================
-       CREATE HEART
-       ================================= */
+const gift =
+  document.getElementById("gift");
 
-    function createHeart() {
+const openBtn =
+  document.getElementById("openBtn");
 
-      const heart =
-        document.createElement("div");
+const start =
+  document.getElementById("start");
 
-      heart.className = "heart";
+const messagesBox =
+  document.getElementById("messages");
 
-      const heartTypes = [
-        "❤️",
-        "💕",
-        "💖",
-        "💗",
-        "💓",
-        "💘",
-        "💝"
-      ];
+const final =
+  document.getElementById("final");
 
-      heart.textContent =
-        heartTypes[
-          Math.floor(
-            Math.random() * heartTypes.length
-          )
-        ];
+const message =
+  document.getElementById("message");
 
-      heart.style.left =
-        Math.random() * 100 + "%";
+const icon =
+  document.getElementById("icon");
 
-      heart.style.fontSize =
-        (15 + Math.random() * 25) + "px";
+const counter =
+  document.getElementById("counter");
 
-      heart.style.animationDuration =
-        (5 + Math.random() * 5) + "s";
+const next =
+  document.getElementById("next");
 
-      hearts.appendChild(heart);
+const restart =
+  document.getElementById("restart");
 
-      setTimeout(() => {
-        heart.remove();
-      }, 10000);
-    }
+const hearts =
+  document.getElementById("hearts");
 
+const music =
+  document.getElementById("music");
 
-    /* Hearts kullum */
+const musicBtn =
+  document.getElementById("musicBtn");
 
-    setInterval(createHeart, 700);
 
+let current = 0;
 
-    /* =================================
-       TYPEWRITER EFFECT
-       ================================= */
 
-    function typeMessage(text) {
+/* ==========================
+   TYPEWRITER
+========================== */
 
-      message.textContent = "";
+function typeText(text){
 
-      let i = 0;
+  message.textContent = "";
 
-      const speed = 45;
+  let i = 0;
 
-      function type() {
+  function type(){
 
-        if (i < text.length) {
+    if(i < text.length){
 
-          message.textContent += text.charAt(i);
+      message.textContent += text[i];
 
-          i++;
+      i++;
 
-          setTimeout(type, speed);
-
-        }
-
-      }
-
-      type();
-    }
-
-
-    /* =================================
-       SHOW MESSAGE
-       ================================= */
-
-    function showMessage() {
-
-      if (currentMessage >= messages.length) {
-
-        showFinal();
-
-        return;
-      }
-
-      const item =
-        messages[currentMessage];
-
-      messageIcon.textContent =
-        item.icon;
-
-      counter.textContent =
-        `${currentMessage + 1} / ${messages.length}`;
-
-      typeMessage(item.text);
-
-      currentMessage++;
+      setTimeout(type,38);
 
     }
 
+  }
 
-    /* =================================
-       OPEN GIFT
-       ================================= */
-
-    openBtn.addEventListener("click", () => {
-
-      gift.classList.add("opened");
-
-      openBtn.style.display = "none";
-
-      setTimeout(() => {
-
-        startScreen.style.display = "none";
-
-        messageBox.style.display = "block";
-
-        showMessage();
-
-      }, 900);
-
-    });
+  type();
+}
 
 
-    /* =================================
-       CLICK MESSAGE
-       ================================= */
+/* ==========================
+   SHOW MESSAGE
+========================== */
 
-    messageBox.addEventListener("click", () => {
+function showMessage(){
 
-      showMessage();
+  if(current >= messages.length){
 
-    });
+    messagesBox.style.display = "none";
 
+    final.style.display = "block";
 
-    /* =================================
-       FINAL SCREEN
-       ================================= */
+    createExplosion();
 
-    function showFinal() {
+    return;
 
-      messageBox.style.display = "none";
+  }
 
-      finalScreen.style.display = "block";
+  const item =
+    messages[current];
 
-      for (let i = 0; i < 20; i++) {
+  icon.textContent =
+    item.icon;
 
-        setTimeout(createHeart, i * 100);
+  counter.textContent =
+    `${current + 1} / ${messages.length}`;
 
-      }
+  typeText(item.text);
 
-    }
+  current++;
 
-
-    /* =================================
-       RESTART
-       ================================= */
-
-    restartBtn.addEventListener("click", () => {
-
-      currentMessage = 0;
-
-      finalScreen.style.display = "none";
-
-      startScreen.style.display = "block";
-
-      gift.classList.remove("opened");
-
-      openBtn.style.display = "inline-block";
-
-    });
+}
 
 
-  </script>
+/* ==========================
+   OPEN GIFT
+========================== */
+
+openBtn.addEventListener("click",()=>{
+
+  gift.classList.add("opened");
+
+  openBtn.style.display = "none";
+
+  setTimeout(()=>{
+
+    start.style.display = "none";
+
+    messagesBox.style.display = "block";
+
+    showMessage();
+
+  },900);
+
+});
+
+
+/* ==========================
+   NEXT
+========================== */
+
+next.addEventListener("click",()=>{
+
+  showMessage();
+
+});
+
+
+/* ==========================
+   RESTART
+========================== */
+
+restart.addEventListener("click",()=>{
+
+  current = 0;
+
+  final.style.display = "none";
+
+  start.style.display = "block";
+
+  gift.classList.remove("opened");
+
+  openBtn.style.display = "inline-block";
+
+});
+
+
+/* ==========================
+   HEARTS
+========================== */
+
+function createHeart(){
+
+  const heart =
+    document.createElement("div");
+
+  heart.className = "heart";
+
+  const list = [
+    "❤️",
+    "💕",
+    "💖",
+    "💗",
+    "💓",
+    "💘",
+    "🌹"
+  ];
+
+  heart.textContent =
+    list[Math.floor(Math.random()*list.length)];
+
+  heart.style.left =
+    Math.random()*100+"%";
+
+  heart.style.fontSize =
+    15 + Math.random()*25+"px";
+
+  heart.style.animationDuration =
+    5 + Math.random()*5+"s";
+
+  hearts.appendChild(heart);
+
+  setTimeout(()=>{
+    heart.remove();
+  },10000);
+
+}
+
+
+setInterval(createHeart,650);
+
+
+/* ==========================
+   FINAL HEART EXPLOSION
+========================== */
+
+function createExplosion(){
+
+  for(let i=0;i<35;i++){
+
+    setTimeout(createHeart,i*80);
+
+  }
+
+}
+
+
+/* ==========================
+   MUSIC
+========================== */
+
+let playing = false;
+
+musicBtn.addEventListener("click",()=>{
+
+  if(!playing){
+
+    music.play()
+      .then(()=>{
+
+        playing = true;
+
+        musicBtn.textContent = "🔊";
+
+      })
+      .catch(()=>{
+
+        alert(
+          "Ka saka music.mp3 a cikin wannan folder."
+        );
+
+      });
+
+  }else{
+
+    music.pause();
+
+    playing = false;
+
+    musicBtn.textContent = "🔇";
+
+  }
+
+});
+
+</script>
 
 </body>
 </html>
